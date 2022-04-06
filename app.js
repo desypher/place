@@ -104,7 +104,7 @@ app.recreateServer();
 
 async function connectToDb() {
     try {
-        await mongoose.connect('mongodb://localhost:27017/place', { useNewUrlParser: true, 
+        await mongoose.connect(app.config.database, { useNewUrlParser: true, 
         useUnifiedTopology: true,
         family: 4});
       } catch (error) {
