@@ -49,7 +49,8 @@ class PlaceSocket extends EventEmitter3 {
             return;
         }
 
-        this.socket = new WebSocket(`ws${window.location.protocol === "https:" ? "s" : ""}://${window.location.host}`);
+        this.socket = io();
+            console.log("connecting");
 
         this.socket.addEventListener("open", () => {
             this.state.reconnecting = false;

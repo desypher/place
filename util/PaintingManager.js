@@ -58,7 +58,7 @@ function PaintingManager(app) {
                         var progressUpdater = setInterval(() => {
                             app.logger.info("Startup", `Loaded ${loaded.toLocaleString()} of ${count.toLocaleString()} pixel${count == 1 ? "" : "s"} (${Math.round(loaded / count * 100)}% complete)`);
                         }, 2500);
-                        Pixel.find({}).stream().on("data", (pixel) => {
+                        Pixel.find({}).cursor().on("data", (pixel) => {
                             const x = pixel.xPos, y = pixel.yPos;
                             const hex = Jimp.cssColorToHex(pixel.getHexColour());
                             if (x >= 0 && y >= 0 && x < imageSize && y < imageSize) image.setPixelColor(hex, x, y);

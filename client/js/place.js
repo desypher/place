@@ -159,7 +159,7 @@ var place = {
     /**
      * @type {PlaceSocket}
      */
-    socket: new PlaceSocket("client"),
+    socket: null,
     stat() {
         this.socket.emit("stat");
     },
@@ -318,6 +318,7 @@ var place = {
     },
 
     getCanvasImage: function() {
+        console.log("Get Canvas Image");
         if(this.loadedImage) return;
         var app = this;
         this.adjustLoadingScreen("Loading…");;
@@ -374,7 +375,7 @@ var place = {
     neededPixelDate: null,
     requestPixelsAfterDate(date) {
         console.log("Requesting pixels after date " + date);
-        this.socket.send("fetch_pixels", {ts: date});
+        this.socket.emit("fetch_pixels", {ts: date});
     },
 
     setupInteraction: function() {
@@ -465,7 +466,18 @@ var place = {
     },
 
     initializeSocketConnection() {
-        this.socket.on("open", () => {
+        console.log("test");
+        this.socket = io();
+        this.socket.on("error", (e) => {
+            console.error("Socket error (will reload pixels on reconnect to socket): " + e);
+            this.isOutdated = true;
+        });
+        this.socket.on("disconnect", () => {
+            console.warn("Socket disconnected from server, remembering to reload pixels on reconnect.")
+            this.isOutdated = true
+        });
+        this.socket.on("connect", () => {
+            console.log("Socket successfully connected");
             if(!this.isOutdated) return;
             if(Date.now() / 1000 - this.lastPixelUpdate > 60) {
                 // 1 minute has passed
@@ -479,22 +491,21 @@ var place = {
             }
         });
 
-        this.socket.on("close", () => {
-            this.isOutdated = true;
+        this.socket.on("tile_placed", (data) => {
+            this.liveUpdateTile(JSON.parse(data));
         });
-
-        const events = {
-            tile_placed: this.liveUpdateTile.bind(this),
-            tiles_placed: this.liveUpdateTiles.bind(this),
-            server_ready: this.getCanvasImage.bind(this),
-            user_change: this.userCountChanged.bind(this),
-            admin_broadcast: this.adminBroadcastReceived.bind(this),
-            reload_client: () => window.location.reload(),
-        };
-
-        Object.keys(events).forEach(eventName => {
-            this.socket.on(eventName, events[eventName]);
+        this.socket.on("tiles_placed", (data) => {
+            this.liveUpdateTiles(JSON.parse(data));
         });
+        this.socket.on("server_ready", () => this.getCanvasImage());
+        this.socket.on("user_change", (data) => {
+            this.userCountChanged(data);
+        });
+        this.socket.on("admin_broadcast", (data) => {
+            this.adminBroadcastReceived(JSON.parse(data));
+        });
+        this.socket.on("reload_client", () => window.location.reload());
+        console.log(this.socket);
     },
 
     get isAFK() {
@@ -511,21 +522,24 @@ var place = {
         return {x: getRandomTileNumber(), y: getRandomTileNumber()};
     },
 
-    liveUpdateTiles: function(data) {
+    liveUpdateTiles(data) {
+        console.log("Live Tiles Update");
         if(!data.pixels) return;
         data.pixels.forEach((pixel) => this.liveUpdateTile(pixel));
     },
 
-    liveUpdateTile: function (data) {
+    liveUpdateTile(data) {
+        console.log("Live Tile Update");
         this.lastPixelUpdate = Date.now() / 1000;
         this.setPixel(`#${data.colour}`, data.x, data.y);
     },
 
-    adminBroadcastReceived: function(data) {
+    adminBroadcastReceived(data) {
+        console.log("Broadcast");
         this.showAdminBroadcast(data.title, data.message, data.style || "info", data.timeout || 0);
     },
 
-    userCountChanged: function (data) {
+    userCountChanged(data) {
         if(data !== null) this.changeUserCount(data);
     },
 

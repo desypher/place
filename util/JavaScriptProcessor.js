@@ -41,19 +41,24 @@ class JavaScriptProcessor {
             return t;
         });
         this.watchJavaScript()
-        gulp.task("default", ["watch", "scripts"]);
     }
 
     processJavaScript() {
-        gulp.start(["scripts"]);
+        gulp.series(gulp.task('scripts'))();
     }
 
     cleanJavaScript() {
-        gulp.start(["clean"]);
+        gulp.task("clean", gulp.series("clean"), function(done) {
+            devMode = true;
+            done();
+        });
     }
 
     watchJavaScript() {
-        gulp.start(["watch"]);
+        gulp.task("watch", gulp.series("watch"), function(done) {
+            devMode = true;
+            done();
+        });
     }
 }
 
