@@ -17,7 +17,7 @@ function LeaderboardManager(app) {
             this.needsUpdating = false;
             var dateBackLastWeek = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
             var pixelCounts = {};
-            Pixel.find({lastModified: {$gt: dateBackLastWeek}}, {editorID: 1}).stream().on("data", (pixel) => {
+            Pixel.find({lastModified: {$gt: dateBackLastWeek}}, {editorID: 1}).cursor().on("data", (pixel) => {
                 if (!pixel.editorID) return;
                 var uid = pixel.editorID.toString();
                 if(!Object.keys(pixelCounts).includes(uid)) pixelCounts[uid] = 0;

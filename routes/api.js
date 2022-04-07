@@ -68,7 +68,7 @@ function APIRouter(app) {
 
     // Normal APIs
 
-    const signUpRatelimit = new Ratelimit(require("../util/RatelimitStore")(), {
+    const signUpRatelimit = new Ratelimit(require("../util/RatelimitStore")("SignUp"), {
         freeRetries: 3, // 3 sign ups per hour
         attachResetToRequest: false,
         refreshTimeoutOnRequest: false,
@@ -81,7 +81,7 @@ function APIRouter(app) {
         proxyDepth: app.config.trustProxyDepth
     });
 
-    const signInRatelimit = new Ratelimit(require("../util/RatelimitStore")(), {
+    const signInRatelimit = new Ratelimit(require("../util/RatelimitStore")("SignIn"), {
         freeRetries: 5, // 5 sign in attempts per 15-60 minutes
         attachResetToRequest: false,
         refreshTimeoutOnRequest: false,
@@ -121,7 +121,7 @@ function APIRouter(app) {
 
     router.get("/timer", requireUser, PlaceController.getAPITimer);
 
-    const accountDataRatelimit = new Ratelimit(require("../util/RatelimitStore")(), {
+    const accountDataRatelimit = new Ratelimit(require("../util/RatelimitStore")("Access"), {
         freeRetries: 1, // 1 download per hour
         attachResetToRequest: false,
         refreshTimeoutOnRequest: false,

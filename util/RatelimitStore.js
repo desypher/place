@@ -2,8 +2,8 @@ const MongooseStore = require("express-brute-mongoose");
 const bruteForceSchema = require("express-brute-mongoose/dist/schema");
 const mongoose = require("mongoose");
 
-function RatelimitStore(name = null) {
-    const model = mongoose.model(`bruteforce${name ? `${-name}` : ""}`, bruteForceSchema);
+function RatelimitStore(name) {
+    var model = mongoose.model("bruteforce" + name, bruteForceSchema);
     return new MongooseStore(model);
 }
 

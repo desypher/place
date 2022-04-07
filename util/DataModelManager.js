@@ -11,6 +11,8 @@ class DataModelManager {
         this.modelFields = {};
     }
 
+    
+
     registerModel(name, prototype) {
         var m = this;
         // Check if we've already initialized this model
@@ -27,7 +29,7 @@ class DataModelManager {
             prototype.options.strict = false;
         }
         if(this.modelFields[name]) prototype.add(this.modelFields[name]);
-        var model = mongoose.model(name, this.registeredModels.get(name) || prototype);
+        var model = mongoose.models[name] || mongoose.model(name, this.registeredModels.get(name) || prototype);
         if(needsInitialization) {
             // Add original model instance methods to our manager for later, and change them in the model to call the manager.
             Object.keys(prototype.methods).forEach((key) => {

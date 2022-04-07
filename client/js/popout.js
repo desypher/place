@@ -115,7 +115,7 @@ var popoutController = {
 
         socket.on("new_message", (data) => {
             this.loadActiveUsers();
-            this.addChatMessage(data);
+            this.addChatMessage(JSON.parse(data));
         });
 
         return socket;
@@ -207,6 +207,7 @@ var popoutController = {
     },
 
     addChatMessage: function(message) {
+        console.log(message);
         if(this.messages.map((m) => m.id).indexOf(message.id) < 0) {
             this.messages.push(message);
             this.layoutMessages($("body").data("user-id") == message.userID);

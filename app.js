@@ -101,7 +101,23 @@ app.recreateServer = () => {
 }
 app.recreateServer();
 
-mongoose.connect(process.env.DATABASE || app.config.database);
+
+async function connectToDb() {
+    try {
+        await mongoose.connect(app.config.database, { useNewUrlParser: true, 
+        useUnifiedTopology: true,
+        family: 4});
+      } catch (error) {
+        console.log(error);
+      }
+
+    if (mongoose.connection.readyState === 1) {
+     console.log("Successfully connected to database");
+    }
+}
+connectToDb().then(function(data) {
+    console.log(data);
+});
 
 const handlePendingDeletions = () => {
     setInterval(() => {
@@ -112,6 +128,10 @@ const handlePendingDeletions = () => {
         });
     }, 30 * Math.pow(10, 3));
 }
+
+mongoose.connection.on('error', err => {
+    app.logger.log('DB Connection', err);
+  });
 
 mongoose.connection.once('connected', () => {
     handlePendingDeletions();
