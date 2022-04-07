@@ -227,6 +227,7 @@ var place = {
             app.cursorY = e.pageY;
         };
 
+
         window.onresize = () => this.handleResize();
         window.onhashchange = () => this.handleHashChange();
         $(window).on("wheel mousewheel", (e) => this.mousewheelMoved(e));
@@ -405,7 +406,8 @@ var place = {
                 var coord = app.getCoordinates();
                 app.hashHandler.modifyHash(coord);
             }
-        }).on("tap", (event) => {
+        })
+        .on("tap", (event) => {
             if(event.interaction.downEvent.button == 2) return event.preventDefault();
             if(!this.zooming.zooming) {
                 var cursor = app.getCanvasCursorPosition(event.pageX, event.pageY);
@@ -466,7 +468,6 @@ var place = {
     },
 
     initializeSocketConnection() {
-        console.log("test");
         this.socket = io();
         this.socket.on("error", (e) => {
             console.error("Socket error (will reload pixels on reconnect to socket): " + e);
@@ -505,7 +506,6 @@ var place = {
             this.adminBroadcastReceived(JSON.parse(data));
         });
         this.socket.on("reload_client", () => window.location.reload());
-        console.log(this.socket);
     },
 
     get isAFK() {
