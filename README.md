@@ -77,6 +77,19 @@ server {
 }
 ```
 
+__To make yourself admin:__
+
+1. Run `mongo` (or `mongosh`)
+2. Type `use place`
+3. Paste in the following:
+```
+use place
+db.users.updateOne(
+{name: 'YOURUSERNAME'},
+{$set: {admin: true}
+})
+```
+
 ## Contributing 
 
 Please make a [pull request](/https://github.com/dynastic/place/pulls). Before making a pull request, come and chat with us on [Discord](https://discord.gg/CgC8FTg) in #contributors.
