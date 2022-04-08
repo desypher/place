@@ -83,7 +83,6 @@ __To make yourself admin:__
 2. Type `use place`
 3. Paste in the following:
 ```
-use place
 db.users.updateOne(
 {name: 'YOURUSERNAME'},
 {$set: {admin: true}
