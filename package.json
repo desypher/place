@@ -65,7 +65,7 @@
     "md5": "^2.2.1",
     "mongodb-core": "^3.2.7",
     "mongoose": "^6.2.10",
-    "mongoose-datatables": "github:applebetas/mongoose-datatables",
+    "mongoose-datatables": "^3.2.0",
     "mongoose-model-stream": "^3.1.0",
     "morgan": "^1.8.1",
     "mquery": "^4.0.2",

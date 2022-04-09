@@ -4605,9 +4605,10 @@ mongodb@4.3.1:
   optionalDependencies:
     saslprep "^1.0.3"
 
-"mongoose-datatables@github:applebetas/mongoose-datatables":
-  version "3.0.1"
-  resolved "https://codeload.github.com/applebetas/mongoose-datatables/tar.gz/7d77514650fe6143beabbc4ed0c4b8d5558207ed"
+mongoose-datatables@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/mongoose-datatables/-/mongoose-datatables-3.2.0.tgz#38206b0284be61616f6b1f7f8bea49d1415a08d5"
+  integrity sha512-7yKBloJGTmCSqbTv2l8QdaC2V55L79QOUBGDbYdvw8aRvQQp6lRv7Una2Dki8ZlBHnCUMG4paGPH9q0tUZga6A==
 
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
