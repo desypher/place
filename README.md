@@ -26,7 +26,8 @@ These instructions will help you get an instance of the project up and running o
 2. Configure your Place server as you see fit by modifying the values
    > **Important:** You must set a strong secret in the secret field to protect against cookie-spoofing attacks that could result in attacks on your site!
 3. Run `yarn install` to install the dependencies
-4. Finally, run `node app.js` to start the server.
+4. Create a new database on your instance of MongoDB and include it in `config/config.js`
+5. Finally, run `node app.js` to start the server.
 
 ### Production Deployment
 
